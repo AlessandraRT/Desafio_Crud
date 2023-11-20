@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formulário JavaScript</title>
+</head>
+<body>
+
+<h1>Cadastro de pessoas</h1>
+<form class="form js-form">
+    <label for="name">
+        Nome
+        <input class="form-field js-field" id="name" maxlength="120" name="name" required type="text">
+    </label>
+    <label for="birth-date">
+        Data de Nascimento
+        <input class="form-field js-field" id="birth-date" name="birth-date" required type="text" placeholder="DD/MM/AAAA">
+    </label>
+    <button type="submit">Salvar</button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('.js-form');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Previne o comportamento padrão do formulário
+
+            const nameInput = document.getElementById('name').value.trim();
+            const birthDateInput = document.getElementById('birth-date').value.trim();
+
+            // Expressão regular para validar nome: apenas letras, mínimo 3, máximo 120
+            const nameRegex = /^[a-zA-Z]{3,120}$/;
+
+            // Expressão regular para validar data no formato DD/MM/AAAA
+            const dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+
+            if (!nameRegex.test(nameInput)) {
+                alert('O nome deve ter no mínimo 3 letras, máximo 120 letras e conter apenas letras.');
+                return;
+            }
+
+            if (!dateRegex.test(birthDateInput)) {
+                alert('Formato de data inválido. Use o formato DD/MM/AAAA.');
+                return;
+            }
+
+            const [day, month, year] = birthDateInput.split('/');
+            const parsedDate = new Date(`${year}-${month}-${day}`);
+
+            if (parsedDate.getMonth() + 1 !== parseInt(month, 10)) {
+                alert('Mês informado deve estar entre 01 e 12.');
+                return;
+            }
+
+            console.log("Nome:", nameInput);
+            console.log("Data de Nascimento:", birthDateInput);
+            // Aqui você pode prosseguir com a lógica para salvar os dados ou realizar outras ações necessárias.
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formulário JavaScript</title>
+</head>
+<body>
+
+<h1>Cadastro de pessoas</h1>
+<form class="form js-form">
+    <label for="name">
+        Nome
+        <input class="form-field js-field" id="name" maxlength="120" name="name" required type="text">
+    </label>
+    <label for="birth-date">
+        Data de Nascimento
+        <input class="form-field js-field" id="birth-date" name="birth-date" required type="text" placeholder="DD/MM/AAAA">
+    </label>
+    <button type="submit">Salvar</button>
+</form>
+<br>
+<table class="table js-table" border="1">
+    <thead >
+        <tr>
+            <th>Nome</th>
+            <th>Data de Nascimento</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Aqui serão inseridos os dados da tabela -->
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('.js-form');
+        const tableBody = document.querySelector('.js-table tbody');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const nameInput = document.getElementById('name').value.trim();
+            const birthDateInput = document.getElementById('birth-date').value.trim();
+
+            // ...validações de dados aqui...
+
+            const person = {
+                name: nameInput,
+                birthDate: birthDateInput
+            };
+
+            saveDataLocally(person);
+            displayDataInTable();
+        });
+
+        function saveDataLocally(person) {
+            let people = JSON.parse(localStorage.getItem('people')) || [];
+            people.push(person);
+            localStorage.setItem('people', JSON.stringify(people));
+        }
+
+        function displayDataInTable() {
+            tableBody.innerHTML = '';
+            const people = JSON.parse(localStorage.getItem('people')) || [];
+
+            people.forEach(function(person) {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${person.name}</td><td>${person.birthDate}</td>`;
+                tableBody.appendChild(row);
+            });
+        }
+
+        displayDataInTable();
+    });
+</script>
+
+</body>
+</html>
